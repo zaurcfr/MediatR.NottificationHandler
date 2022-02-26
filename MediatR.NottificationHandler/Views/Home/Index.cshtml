@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form action="/" method="post">
+        <input type="text" id="productName" value="" />
+        <input type="submit" id="add" value="Add" placeholder="Product Name" onclick="(event) => addProduct()" />
+    </form>
+</div>
+
+<script src="~/lib/aspnet-signalr/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/notifyHub")
+        .build();
+    connection.start().catch(error => consol.log(error));
+    console.log(connection);
+
+    document.getElementById('add').addEventListener("click", event => {
+        var productInput = document.getElementById('productName');
+        var productValue = productInput.value;
+        productInput.value = "";
+        connection.invoke("AddProduct", productValue);
+        event.preventDefault();
+    })
+
+    connection.on("ReceiveNotification", (message) => {
+        alert(message);
+    });
+
+</script>
