@@ -36,7 +36,7 @@ namespace MediatR.NottificationHandler.Handlers.Commands.Products
                     Name = request.Name
                 };
                 _products.Add(p);
-                notification.Message = "New product added: " + request.Name
+                notification.Message = "New product added: " + request.Name;
             }
             catch (Exception)
             {

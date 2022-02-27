@@ -13,6 +13,7 @@ namespace MediatR.NottificationHandler
     {
         public static void Main(string[] args)
         {
+            SeedData.FillProducts();
             CreateHostBuilder(args).Build().Run();
         }
 

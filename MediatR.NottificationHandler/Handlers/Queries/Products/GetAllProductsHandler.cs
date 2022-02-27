@@ -16,11 +16,12 @@ namespace MediatR.NottificationHandler.Handlers.Queries.Products
     {
         public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            var list = new List<Product>
-            {
-                new Product{ Id = 1, Name = "Senan" }
-            };
-            return list;
+            //var list = new List<Product>
+            //{
+            //    new Product{ Id = 1, Name = "Senan" }
+            //};
+            //return list;
+            return SeedData.Products;
         }
     }
 }

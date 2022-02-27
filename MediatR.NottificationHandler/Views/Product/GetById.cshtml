@@ -1,0 +1,56 @@
+﻿@model MediatR.NottificationHandler.Models.Product
+
+@{
+    ViewData["Title"] = "GetById";
+}
+
+<h1>GetById</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+
+    <form action="/" method="post" id="commentForm">
+        <input type="text" name="comment" id="comment" />
+        <input type="submit" name="addComment" value="addComment" />
+    </form>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/notifyHub")
+        .build();
+    connection.start().catch(error => consol.log(error));
+
+    var postId = window.location.href.toString().split('/')[5];
+    connection.invoke("AddGroup", `${postId}`);
+
+    document.getElementById("addComment").addEventListener("click", function (event) {
+        var commentValue = document.getElementById("comment").value;
+        connection.invoke("AddRealTimeComment", commentValue, postId);
+        event.preventDefault();
+    });
+
+    connection.on("ReceiveComment", (message) => {
+        console.log(message);
+    })
+    
+</script>

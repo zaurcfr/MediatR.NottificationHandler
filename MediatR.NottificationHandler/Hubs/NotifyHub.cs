@@ -30,6 +30,16 @@ namespace MediatR.NottificationHandler.Hubs
             });
         }
 
+        public async Task AddGroup(string groupName)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        }
+
+        public async Task AddRealTimeComment(string message, string groupName)
+        {
+            await Clients.Group(groupName).SendAsync("ReceiveComment", message);
+        }
+
         public override Task OnDisconnectedAsync(Exception exception)
         {
             return base.OnDisconnectedAsync(exception);
